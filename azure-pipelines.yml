@@ -1,0 +1,19 @@
+# Archivo de configuración para Azure Pipelines
+# Este pipeline compila y ejecuta un programa Java simple
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'       # versión de Java (puedes usar 11 o 17)
+    jdkArchitecture: 'x64'
+
+- script: |
+    javac VS1.java
+    java VS1
+  displayName: "Compilar y ejecutar Hola Mundo en Java"
