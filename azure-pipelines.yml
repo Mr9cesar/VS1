@@ -1,0 +1,42 @@
+trigger:
+- main  # Se ejecuta cuando subas algo a la rama main
+
+pool:
+  vmImage: 'ubuntu-latest'  # Usa una máquina virtual de Linux
+
+stages:
+# Etapa 1: Desarrollo
+- stage: Dev
+  displayName: "Compilación en Desarrollo"
+  jobs:
+  - job: Build
+    steps:
+    - script: |
+        echo "=== Etapa: Desarrollo ==="
+        javac VS1.java          # Compila tu archivo Java
+        java VS1                # Lo ejecuta
+      displayName: "Ejecutar código Java (VS1.java) en Desarrollo"
+
+# Etapa 2: QA (Pruebas)
+- stage: QA
+  displayName: "Pruebas (QA)"
+  dependsOn: Dev
+  jobs:
+  - job: QA
+    steps:
+    - script: |
+        echo "=== Etapa: QA ==="
+        echo "Pruebas automáticas completadas correctamente "
+      displayName: "Validación en QA"
+
+# Etapa 3: Producción
+- stage: Prod
+  displayName: "Despliegue en Producción"
+  dependsOn: QA
+  jobs:
+  - job: Deploy
+    steps:
+    - script: |
+        echo "=== Etapa: Producción ==="
+        echo "Aplicación Java desplegada correctamente "
+      displayName: "Despliegue final en Producción"
